@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Temperature Sensor",
+        "type": "temperature",
+        "value": 20,
+        "unit": "°C",
+        "updated_at": "2021-06-01T12:00:00"
+    },
+    {
+        "id": 2,
+        "name": "Humidity Sensor",
+        "type": "humidity",
+        "value": 50,
+        "unit": "%",
+        "updated_at": "2021-06-01T12:00:00"
+    },
+    {
+        "id": 3,
+        "name": "Pressure Sensor",
+        "type": "pressure",
+        "value": 1013,
+        "unit": "hPa",
+        "updated_at": "2021-06-01T12:00:00"
+    }
+]

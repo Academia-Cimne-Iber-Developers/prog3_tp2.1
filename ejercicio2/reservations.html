@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="icon"
+            href="https://academiacimneiber.com/assets/logoClaro-Z6OnHFdL.png"
+        />
+        <title>Sistema de Reservas</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"
+        />
+        <style>
+            .navbar {
+                position: fixed; /* Fija el navbar en la parte superior de la pantalla */
+                top: 0; /* Ajusta el límite superior del navbar para que se muestre en la parte superior de la pantalla */
+                left: 0; /* Ajusta el límite izquierdo del navbar para que ocupe toda la pantalla */
+                right: 0; /* Ajusta el límite derecho del navbar para que ocupe toda la pantalla */
+                z-index: 1000;
+            }
+            .body-content {
+                padding-top: 52px;
+            }
+            .scrollable-column {
+                max-height: calc(100vh - 52px);
+                overflow-y: auto;
+            }
+        </style>
+    </head>
+    <body data-theme="dark">
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="#">
+                    <img
+                        src="https://academiacimneiber.com/assets/logoClaro-Z6OnHFdL.png"
+                    />
+                    <span class="title is-5 ml-2">
+                        Restaurant Reservations
+                    </span>
+                </a>
+                <a
+                    role="button"
+                    class="navbar-burger"
+                    aria-label="menu"
+                    aria-expanded="false"
+                    data-target="sidebarMenu"
+                >
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item add-reservation"> Agregar Reserva </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="columns body-content">
+            <div class="column scrollable-column">
+                <section class="section">
+                    <div class="container">
+                        <h2 class="subtitle">Lista de Reservas</h2>
+                        <div id="reservations-list"></div>
+                    </div>
+                </section>
+            </div>
+
+            <div
+                class="column is-one-third"
+                id="sidebarMenu"
+                style="display: none"
+            >
+                <aside class="menu">
+                    <div class="box gapable">
+                        <h2 class="subtitle">Agregar Reserva</h2>
+                        <form id="reservation-form">
+                            <div class="field">
+                                <label class="label">Nombre Completo</label>
+                                <div class="control">
+                                    <input
+                                        class="input"
+                                        type="text"
+                                        id="customer-name"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Email</label>
+                                <div class="control">
+                                    <input
+                                        class="input"
+                                        type="email"
+                                        id="customer-email"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Fecha de la Reserva</label>
+                                <div class="control">
+                                    <input
+                                        class="input"
+                                        type="datetime-local"
+                                        id="reservation-date"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Número de Personas</label>
+                                <div class="control">
+                                    <input
+                                        class="input"
+                                        type="number"
+                                        id="guests"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div class="control">
+                                <button class="button is-primary" type="submit">
+                                    Agregar Reserva
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <script src="reservations.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const navbarBurger = document.querySelector(".navbar-burger");
+                const sidebarMenu = document.getElementById("sidebarMenu");
+                const addReservationItem = document.querySelector(
+                    ".navbar-item.add-reservation"
+                );
+
+                navbarBurger.addEventListener("click", () => {
+                    navbarBurger.classList.toggle("is-active");
+                    sidebarMenu.classList.toggle("is-active");
+                    if (
+                        sidebarMenu.style.display === "none" ||
+                        sidebarMenu.style.display === ""
+                    ) {
+                        sidebarMenu.style.display = "block";
+                    } else {
+                        sidebarMenu.style.display = "none";
+                    }
+                });
+
+                addReservationItem.addEventListener("click", () => {
+                    if (
+                        sidebarMenu.style.display === "none" ||
+                        sidebarMenu.style.display === ""
+                    ) {
+                        sidebarMenu.style.display = "block";
+                    } else {
+                        sidebarMenu.style.display = "none";
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
