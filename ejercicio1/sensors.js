@@ -1,4 +1,33 @@
-class Sensor {}
+class Sensor {
+    constructor(id, name, type, value, unit, updated_at) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.value = value;
+        this.unit = unit;
+        this.updated_at = updated_at
+    }
+
+    set updateValue(new_value) {
+        this.value = new_value;
+        this.updated_at = new Date().toISOString();
+    }
+
+    set type(value) {
+        const types_ok = ['temperature', 'humidity', 'pressure'];
+        if (!types_ok.includes(value)) {
+            console.log("Tipo de sensor invalido")
+            throw new Error(`El tipo de sensor ${value} es inválido`);
+        }else {
+            this._type = value;
+        }
+    }
+
+    get type() {
+        return this._type;
+    }
+
+}
 
 class SensorManager {
     constructor() {
@@ -33,7 +62,39 @@ class SensorManager {
         }
     }
 
-    async loadSensors(url) {}
+    //Le agregue mas sensores al json y uno esta tiene mal el type,
+    //y ese arroja un error y no se carga.
+
+    async loadSensors(url) {
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                const sensors_json = await response.json();
+                console.log(sensors_json)
+                sensors_json.forEach(element => {
+                    try {
+                        let new_sensor = new Sensor(
+                            element.id,
+                            element.name,
+                            element.type,
+                            element.value,
+                            element.unit,
+                            element.updated_at                        
+                        )
+                        console.log(new_sensor);
+                        this.addSensor(new_sensor);
+
+                    } catch (error) {
+                        console.error(`Error al cagrgar sensor: ${error.message}`);
+                    }                    
+                });
+                
+                this.render();            
+            }
+        } catch (error) {
+            
+        }
+    }
 
     render() {
         const container = document.getElementById("sensor-container");
