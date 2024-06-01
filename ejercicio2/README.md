@@ -26,7 +26,7 @@ Para completar la implementación, se solicita realizar las siguientes tareas:
         - `guests`: Número de comensales de la reserva.
     - La clase debe tener un constructor.
     - Se debe implementar una propiedad computada `info` que retorne una cadena con la fecha y hora de la reserva, la información del cliente y el número de comensales.
-    - Se debe implementar un método estático `validate` que reciba un objeto con la información de la reserva y retorne `true` si la información es válida y `false` en caso contrario. Si la fecha de la reserva es anterior a la fecha actual y la cantidad de comensales es menor o igual a 0, la reserva no es válida.
+    - Se debe implementar un método estático `validateReservation` que reciba un objeto con la información de la reserva y retorne `true` si la información es válida y `false` en caso contrario. Si la fecha de la reserva es anterior a la fecha actual y la cantidad de comensales es menor o igual a 0, la reserva no es válida.
 
 Adicionalmente, se cuenta con la clase `Restaurant` que se encuentra completa y que permite agregar y renderizar reservas. 
 
