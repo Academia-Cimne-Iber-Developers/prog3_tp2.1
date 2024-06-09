@@ -14,7 +14,7 @@
 class Sensor {
     #validTypes = ["temperature", "humidity", "pressure"];
 
-    constructor(id, name, type, value, unit) {
+    constructor(id, name, type, value, unit, updated_at) {
 
         if (typeof id !== "number") {
             throw new Error("ID debe ser un número");
@@ -35,22 +35,29 @@ class Sensor {
         if (typeof unit !== "string") {
             throw new Error("Unidad debe ser una cadena de texto");
         }
+        if (typeof updated_at !== "string") {
+            throw new Error("Fecha de actualización debe ser una cadena de texto");
+        }
 
         this.id = id;
         this.name = name;
         this.type = type;
         this.value = value;
         this.unit = unit;
-        this.updated_at = new Date();
+        this.updated_at = new Date(updated_at);
     }
 
     set updateValue(newValue) {
+
+        if (typeof newValue !== "number") {
+            throw new Error("Valor debe ser un número");
+        }
+
         this.value = newValue;
         this.updated_at = new Date();
+
     }
 }
-
-
 
 
 class SensorManager {
@@ -68,16 +75,17 @@ class SensorManager {
             let newValue;
             switch (sensor.type) {
                 case "temperature": // Rango de -30 a 50 grados Celsius
-                    newValue = (Math.random() * 80 - 30).toFixed(2);
+                    newValue = (Math.random() * 80 - 30); // quitamos toFixed(2);
+                    console.log(typeof(newValue));
                     break;
                 case "humidity": // Rango de 0 a 100%
-                    newValue = (Math.random() * 100).toFixed(2);
+                    newValue = (Math.random() * 100); // quitamos toFixed(2);
                     break;
                 case "pressure": // Rango de 960 a 1040 hPa (hectopascales o milibares)
-                    newValue = (Math.random() * 80 + 960).toFixed(2);
+                    newValue = (Math.random() * 80 + 960); //quitamos toFixed(2);
                     break;
                 default: // Valor por defecto si el tipo es desconocido
-                    newValue = (Math.random() * 100).toFixed(2);
+                    newValue = (Math.random() * 100); // quitamos toFixed(2);
                     console.log("Tipo de sensor desconocido. Valor generado aleatoriamente.", newValue)
             }
             sensor.updateValue = newValue;
@@ -142,7 +150,7 @@ class SensorManager {
                             </p>
                             <p>
                                <strong>Valor:</strong> 
-                               ${sensor.value} ${sensor.unit}
+                               ${sensor.value.toFixed(2)} ${sensor.unit}
                             </p>
                         </div>
                         <time datetime="${sensor.updated_at}">
