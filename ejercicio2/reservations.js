@@ -1,6 +1,41 @@
-class Customer {}
+//1.-
+class Customer {
+    constructor(id, name, email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 
-class Reservation {}
+   // mi propiedad computada
+    get info() { 
+        return `${this.name} (${this.email})`;
+    }
+}
+
+
+//2.-
+class Reservation {
+    constructor(id, customer, date, guests) {
+        this.id = id;
+        this.customer = customer;
+        this.date = new Date(date);
+        this.guests = guests; //numero de comensales
+    }
+
+    // mi otra propiedad computada
+    get info() {
+        return `${this.date.toLocaleString()} - ${this.customer.info} - ${this.guests} comensales`;
+    }  
+
+    static validateReservation(date, guests) {
+        const currentDate = new Date(); //fecha actual
+        console.log("date RECIBIDA: " + date);
+        console.log("date actual: " + currentDate);
+
+        return date > currentDate && guests > 0;
+    }
+
+}
 
 class Restaurant {
     constructor(name) {
@@ -44,9 +79,12 @@ document
 
         const customerName = document.getElementById("customer-name").value;
         const customerEmail = document.getElementById("customer-email").value;
-        const reservationDate =
-            document.getElementById("reservation-date").value;
+        const reservationDate = new Date(document.getElementById("reservation-date").value);
+        // console.log("reservationDate: " + reservationDate);
+       
+        
         const guests = parseInt(document.getElementById("guests").value);
+        
 
         if (Reservation.validateReservation(reservationDate, guests)) {
             const customerId = restaurant.reservations.length + 1;
@@ -66,6 +104,7 @@ document
 
             restaurant.addReservation(reservation);
             restaurant.render();
+            // alert("Todo Ok");
         } else {
             alert("Datos de reserva inválidos");
             return;
