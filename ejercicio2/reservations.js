@@ -29,8 +29,8 @@ class Reservation {
 
     static validateReservation(date, guests) {
         const currentDate = new Date(); //fecha actual
-        console.log("date RECIBIDA: " + date);
-        console.log("date actual: " + currentDate);
+        // console.log("date RECIBIDA: " + date);
+        // console.log("date actual: " + currentDate);
 
         return date > currentDate && guests > 0;
     }
