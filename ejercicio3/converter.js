@@ -6,12 +6,50 @@ class Currency {
 }
 
 class CurrencyConverter {
-    constructor() {}
+    constructor(apiUrl) {
+        this.apiUrl = apiUrl;
+        this.currencies = [];
+    }
 
-    getCurrencies(apiUrl) {}
+    async getCurrencies(apiUrl) {
+        try {
+            const response = await fetch(`${this.apiUrl}/currencies`);
+            const data = await response.json();
+            this.currencies = Object.entries(data).map(
+                ([code, name]) => new Currency(code, name)
+            );
+        } catch (error) {
+            console.error('Error fetching currencies:', error);
+        } finally {
+            console.log("Petición GET completada");
+        }
+    }
 
-    convertCurrency(amount, fromCurrency, toCurrency) {}
+    async convertCurrency(amount, fromCurrency, toCurrency) {
+        if (fromCurrency.code === toCurrency.code) {
+            return parseFloat(amount); // nos aseguramos que siempre sea un float
+        }
+
+        try {
+            const response = await fetch(
+                `${this.apiUrl}/latest?amount=${amount}&from=${fromCurrency.code}&to=${toCurrency.code}`
+            );
+            const data = await response.json();
+            return parseFloat(data.rates[toCurrency.code]); // nos aseguramos que siempre sea un float
+        } catch (error) {
+            console.error('Error converting currency:', error);
+            return null;
+        } finally {
+            console.log("Petición POST completada");
+        }
+    }
+
+    //https://api.frankfurter.app/1999-01-04?amount=10000&from=USD&to=ZAR
 }
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", async () => {
     const form = document.getElementById("conversion-form");
@@ -43,9 +81,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
 
         if (convertedAmount !== null && !isNaN(convertedAmount)) {
-            resultDiv.textContent = `${amount} ${
-                fromCurrency.code
-            } son ${convertedAmount.toFixed(2)} ${toCurrency.code}`;
+            resultDiv.textContent = `${amount} ${fromCurrency.code
+                } son ${convertedAmount.toFixed(2)} ${toCurrency.code}`;
         } else {
             resultDiv.textContent = "Error al realizar la conversión.";
         }
