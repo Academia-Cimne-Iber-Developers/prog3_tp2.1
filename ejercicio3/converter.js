@@ -45,10 +45,28 @@ class CurrencyConverter {
     }
 
     //https://api.frankfurter.app/1999-01-04?amount=10000&from=USD&to=ZAR
+    // entendemos que el formato de la fecha es YYYY-MM-DD
+    async convertHistorical(date, amount, fromCurrency, toCurrency){
+        if (fromCurrency.code === toCurrency.code) {
+            return parseFloat(amount); // nos aseguramos que siempre sea un float
+        }
+        try {
+            const response = await fetch(
+                `${this.apiUrl}/${date}?amount=${amount}&from=${fromCurrency.code}&to=${toCurrency.code}`
+            );
+            const data = await response.json();
+            return parseFloat(data.rates[toCurrency.code]);
+
+        } catch (error) {
+            console.error('Error converting currency:', error);
+            return null;
+
+        } finally {
+            console.log("Petición POST historical completada");
+        }
+
+    }
 }
-
-
-
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -56,6 +74,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const resultDiv = document.getElementById("result");
     const fromCurrencySelect = document.getElementById("from-currency");
     const toCurrencySelect = document.getElementById("to-currency");
+    // agregado
+    const resultDiv2 = document.getElementById("result2");
 
     const converter = new CurrencyConverter("https://api.frankfurter.app");
 
@@ -86,6 +106,40 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             resultDiv.textContent = "Error al realizar la conversión.";
         }
+
+        // agregado
+        //https://api.frankfurter.app/1999-01-04?amount=10000&from=USD&to=ZAR
+        const today = new Date(); //hoy
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1); //ayer
+        
+
+        // Podria ahorrame esta pediticion dado que ya tengo los datos en convertedAmount.
+        const converterToday = await converter.convertHistorical(
+            formatoDate(today), 
+            amount, 
+            fromCurrency, 
+            toCurrency);
+
+        const converterYesterday = await converter.convertHistorical(
+            formatoDate(yesterday), 
+            amount, 
+            fromCurrency, 
+            toCurrency);
+
+        if (converterToday === null || converterYesterday === null || isNaN(converterToday) || isNaN(converterYesterday)) {
+            resultDiv2.textContent = "Error al realizar la conversión.";
+            console.log("Error al realizar la conversión.");
+
+        } else{
+            const difference = parseFloat(converterToday - converterYesterday);
+            resultDiv2.innerHTML = `
+            <p> (${formatoDate(today)}) - Hoy  ${amount} ${fromCurrency.code} son equivalente a ${converterToday.toFixed(2)} ${toCurrency.code}.</p> 
+            <p>(${formatoDate(yesterday)}) - Ayer ${amount} ${fromCurrency.code} eran equivalente a ${converterYesterday.toFixed(2)} ${toCurrency.code}.</p> 
+            <p>Diferencia de conversión: ${difference.toFixed(2)}</p>`;
+        }
+
+
     });
 
     function populateCurrencies(selectElement, currencies) {
@@ -97,5 +151,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 selectElement.appendChild(option);
             });
         }
+    }
+
+    // agregado
+    function formatoDate(date){
+        // console.log(date);
+        let year = date.getFullYear();
+        let month = (date.getMonth() + 1).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`; // YYYY-MM-DD
     }
 });
