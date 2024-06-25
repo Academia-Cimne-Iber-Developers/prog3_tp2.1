@@ -1,4 +1,19 @@
-class Sensor {}
+class Sensor {
+    updateValue;
+    constructor(id, name, type, value, unit, updated_at){
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.value = value;
+        this.unit = unit;
+        this.updated_at = updated_at;
+    }
+
+    set updateValue(value){
+        this.value = value; 
+        this.updated_at = new Date().toISOString();
+    }
+}
 
 class SensorManager {
     constructor() {
