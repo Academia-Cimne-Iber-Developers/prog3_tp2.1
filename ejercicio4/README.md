@@ -106,3 +106,7 @@ Implementar cualquier funcionalidad adicional entre las siguientes opciones otor
 - Implementar un contador de movimientos para llevar un registro de los intentos realizados por el jugador.
 - Implementar un temporizador para llevar un registro del tiempo que tarda el jugador en completar el juego. Este debe ser llevado a cabo en la clase `MemoryGame` mediante una función asíncrona. Queda a su elección si utilizar promesas, `async/await` o cualquier otro método.
 - Implementar un sistema de puntuación que tome en cuenta el tiempo y los movimientos realizados por el jugador. La puntuación debe ser calculada en función de estos dos factores.
+
+
+#Desarrollo punto n 4
+trate de terminarlo espero que este bien.

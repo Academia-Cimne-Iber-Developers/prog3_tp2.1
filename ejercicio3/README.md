@@ -69,3 +69,6 @@ La API de Frankfurter permite conocer la tasa de cambio de monedas en una fecha 
 Se solicita implementar una funcionalidad adicional que permita determinar la diferencia entre la tasa de cambio de monedas de dos fechas diferentes, en particular, la diferencia entre la tasa de cambio de monedas de hoy y la tasa de cambio de monedas de ayer.
 
 Puede definir métodos adicionales en la clase `CurrencyConverter` para implementar esta funcionalidad.
+
+# Ejercicio 3
+resolucion las funciones para q funcione el convertor de moneda y se agrego a media el adicional.
