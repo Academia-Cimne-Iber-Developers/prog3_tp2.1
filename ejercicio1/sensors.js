@@ -1,12 +1,16 @@
 class Sensor {
-    constructor(id, name, type, value, unit, updated_at){
+    constructor(id, name, type, value, unit, updated_at = null){
         this.id=id;
         this.name=name;
         this.type=type;
         this.value=value;
         this.unit=unit;
-        this.updated_at=updated_at;
-
+        this.updated_at=updated_at || new Date().toISOString();
+    }
+    set updateValue(newValue){
+        this.value= newValue;
+        this.updated_at = new Date().toISOString();
+        
     }
 }
 
