@@ -1,6 +1,33 @@
-class Customer {}
+class Customer {
+    constructor (id, name, email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 
-class Reservation {}
+    get info () {
+        return `${this.name} (${this.email})`;
+    }
+}
+
+class Reservation {
+    constructor(id, customer, date = null, guests){
+        this.id = id;
+        this.customer = customer;
+        this.date = date || new Date(date);
+        this.guests = guests;
+    }
+
+    get info () {
+        return `Fecha de la reserva: ${this.date.toLocaleString()}, Cliente: ${this.customer.info}, Comensales: ${this.guests}`
+    }
+    
+    static validateReservation(date, guests){
+        const reservationDate = new Date(date);
+        const currentDate = new Date();
+        return reservationDate > currentDate && guests > 0;
+    }
+}
 
 class Restaurant {
     constructor(name) {
@@ -75,7 +102,7 @@ document
 const restaurant = new Restaurant("El Lojal Kolinar");
 
 const customer1 = new Customer(1, "Shallan Davar", "shallan@gmail.com");
-const reservation1 = new Reservation(1, customer1, "2024-12-31T20:00:00", 4);
+const reservation1 = new Reservation(1, customer1, "2024-12-31T20:00:00", 6);
 
 if (Reservation.validateReservation(reservation1.date, reservation1.guests)) {
     restaurant.addReservation(reservation1);
